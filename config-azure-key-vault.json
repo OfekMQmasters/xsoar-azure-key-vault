@@ -1,0 +1,1981 @@
+{
+  "name": "AzureKeyVault",
+  "display_name": "Azure Key Vault",
+  "description": "Use Key Vault to safeguard and manage cryptographic keys and secrets used by cloud applications and services",
+  "category": "Utilities",
+  "command_prefix": "azure-key-vault",
+  "docker_image": "demisto/python3:3.9.2.17957",
+  "url": "",
+  "base_url_path": "https://management.azure.com/subscriptions/subscription_id/resourceGroups/group_name/providers/Microsoft.KeyVault/vaults/",
+  "auth": {
+    "type": "apikey",
+    "apikey": [
+      {
+        "key": "value",
+        "value": "dummy-test-key",
+        "type": "string"
+      },
+      {
+        "key": "key",
+        "value": "API-Key",
+        "type": "string"
+      },
+      {
+        "key": "in",
+        "value": "header",
+        "type": "string"
+      }
+    ]
+  },
+  "context_path": "AzureKeyVault",
+  "code_type": "python",
+  "code_subtype": "python3",
+  "is_fetch": false,
+  "fix_code": true,
+  "commands": [
+    {
+      "name": "create-or-update-key-vault",
+      "url_path": "?api-version=2019-09-01",
+      "http_method": "PUT",
+      "description": "Create or update a key vault in the specified subscription.",
+      "context_path": "KeyVault",
+      "root_object": "",
+      "headers": [
+        {
+          "Content-Type": "application/json"
+        }
+      ],
+      "unique_key": "id",
+      "body_format": {
+        "location": "{location}",
+        "properties": {
+          "tenantId": "{tenant_id}",
+          "sku": {
+            "family": "{family}",
+            "name": "{name}"
+          },
+          "accessPolicies": [
+            {
+              "tenantId": "{tenant_id}",
+              "objectId": "{object_id}",
+              "permissions": {
+                "keys": "{keys}",
+                "secrets": "{secrets}",
+                "certificates": "{certificates}"
+              }
+            }
+          ],
+          "enabledForDeployment": "{enabled_for_deployment}",
+          "enabledForDiskEncryption": "{enabled_for_disk_encryption}",
+          "enabledForTemplateDeployment": "{enabled_for_template_deployment}"
+        }
+      },
+      "upload_file": false,
+      "returns_file": false,
+      "returns_entry_file": false,
+      "arguments": [
+        {
+          "name": "tenant_id",
+          "description": "",
+          "required": true,
+          "is_array": false,
+          "default_value": "",
+          "predefined_values": [],
+          "ref": null,
+          "type_": null,
+          "in_": "body",
+          "in_object": []
+        },
+        {
+          "name": "location",
+          "description": "The supported Azure location where the key vault should be created",
+          "required": true,
+          "is_array": false,
+          "default_value": "westus",
+          "predefined_values": [],
+          "ref": null,
+          "type_": null,
+          "in_": "body",
+          "in_object": []
+        },
+        {
+          "name": "properties",
+          "description": "Properties of the vault",
+          "required": true,
+          "is_array": false,
+          "default_value": "",
+          "predefined_values": [],
+          "ref": null,
+          "type_": null,
+          "in_": "body",
+          "in_object": []
+        },
+        {
+          "name": "tags",
+          "description": "The tags that will be assigned to the key vault.",
+          "required": false,
+          "is_array": false,
+          "default_value": "",
+          "predefined_values": [],
+          "ref": null,
+          "type_": null,
+          "in_": "body",
+          "in_object": []
+        },
+        {
+          "name": "family",
+          "description": "SKU family name",
+          "required": false,
+          "is_array": false,
+          "default_value": "",
+          "predefined_values": [],
+          "ref": null,
+          "type_": null,
+          "in_": "body",
+          "in_object": []
+        },
+        {
+          "name": "name",
+          "description": "SKU name to specify whether the key vault is a standard vault or a premium vault.",
+          "required": false,
+          "is_array": false,
+          "default_value": "",
+          "predefined_values": [],
+          "ref": null,
+          "type_": null,
+          "in_": "body",
+          "in_object": []
+        },
+        {
+          "name": "object_id",
+          "description": "The object ID of a user, service principal or security group in the Azure Active Directory tenant for the vault. The object ID must be unique for the list of access policies.",
+          "required": false,
+          "is_array": false,
+          "default_value": "",
+          "predefined_values": [],
+          "ref": null,
+          "type_": null,
+          "in_": "body",
+          "in_object": []
+        },
+        {
+          "name": "keys",
+          "description": "Permissions to keys",
+          "required": false,
+          "is_array": false,
+          "default_value": "",
+          "predefined_values": [
+            "encrypt",
+            "decrypt",
+            "wrapKey",
+            "unwrapKey",
+            "sign",
+            "verify",
+            "get",
+            "list",
+            "create",
+            "update",
+            "import",
+            "delete",
+            "backup",
+            "restore",
+            "recover",
+            "purge"
+          ],
+          "ref": null,
+          "type_": null,
+          "in_": "body",
+          "in_object": []
+        },
+        {
+          "name": "secrets",
+          "description": "Permissions to secrets",
+          "required": false,
+          "is_array": false,
+          "default_value": "",
+          "predefined_values": [
+            "get",
+            "list",
+            "set",
+            "delete",
+            "backup",
+            "restore",
+            "recover",
+            "purge"
+          ],
+          "ref": null,
+          "type_": null,
+          "in_": "body",
+          "in_object": []
+        },
+        {
+          "name": "certificates",
+          "description": "Permissions to certificates",
+          "required": false,
+          "is_array": false,
+          "default_value": "",
+          "predefined_values": [
+            "get",
+            "list",
+            "delete",
+            "create",
+            "import",
+            "update",
+            "managecontacts",
+            "getissuers",
+            "listissuers",
+            "setissuers",
+            "deleteissuers",
+            "manageissuers",
+            "recover",
+            "purge"
+          ],
+          "ref": null,
+          "type_": null,
+          "in_": "body",
+          "in_object": []
+        },
+        {
+          "name": "enabled_for_deployment",
+          "description": "",
+          "required": false,
+          "is_array": false,
+          "default_value": "",
+          "predefined_values": [],
+          "ref": null,
+          "type_": null,
+          "in_": "body",
+          "in_object": []
+        },
+        {
+          "name": "enabled_for_disk_encryption",
+          "description": "",
+          "required": false,
+          "is_array": false,
+          "default_value": "",
+          "predefined_values": [],
+          "ref": null,
+          "type_": null,
+          "in_": "body",
+          "in_object": []
+        },
+        {
+          "name": "enabled_for_template_deployment",
+          "description": "",
+          "required": false,
+          "is_array": false,
+          "default_value": "",
+          "predefined_values": [],
+          "ref": null,
+          "type_": null,
+          "in_": "body",
+          "in_object": []
+        }
+      ],
+      "outputs": [
+        {
+          "name": "id",
+          "description": "resource id",
+          "type_": "String"
+        },
+        {
+          "name": "name",
+          "description": "key vault name",
+          "type_": "String"
+        },
+        {
+          "name": "type",
+          "description": "resource type in Azure",
+          "type_": "String"
+        },
+        {
+          "name": "location",
+          "description": "Key Vault location",
+          "type_": "String"
+        },
+        {
+          "name": "tags",
+          "description": "The tags that will be assigned to the key vault.\n\n",
+          "type_": "String"
+        },
+        {
+          "name": "properties.sku.family",
+          "description": "SKU family name.",
+          "type_": "String"
+        },
+        {
+          "name": "properties.sku.name",
+          "description": "SKU name to specify whether the key vault is a standard vault or a premium vault.",
+          "type_": "String"
+        },
+        {
+          "name": "tenantId",
+          "description": "The Azure Active Directory tenant ID that should be used for authenticating requests to the key vault.",
+          "type_": "String"
+        },
+        {
+          "name": "accessPolicies.tenantId",
+          "description": "The Azure Active Directory tenant ID that should be used for authenticating requests to the key vault.",
+          "type_": "String"
+        },
+        {
+          "name": "accessPolicies.objectId",
+          "description": "The object ID of a user, service principal or security group in the Azure Active Directory tenant for the vault. The object ID must be unique for the list of access policies.",
+          "type_": "String"
+        },
+        {
+          "name": "accessPolicies.permissions.keys",
+          "description": "Permissions to keys",
+          "type_": null
+        },
+        {
+          "name": "accessPolicies.permissions.secrets",
+          "description": "Permissions to secrets",
+          "type_": null
+        },
+        {
+          "name": "accessPolicies.permissions.certificates",
+          "description": "Permissions to certificates",
+          "type_": null
+        },
+        {
+          "name": "enabledForDeployment",
+          "description": "Property to specify whether Azure Virtual Machines are permitted to retrieve certificates stored as secrets from the key vault.",
+          "type_": "Boolean"
+        },
+        {
+          "name": "enabledForDiskEncryption",
+          "description": "Property to specify whether Azure Disk Encryption is permitted to retrieve secrets from the vault and unwrap keys.",
+          "type_": "Boolean"
+        },
+        {
+          "name": "enabledForTemplateDeployment",
+          "description": "Property to specify whether Azure Resource Manager is permitted to retrieve secrets from the key vault.",
+          "type_": "Boolean"
+        },
+        {
+          "name": "hsmPoolResourceId",
+          "description": "The resource id of HSM Pool.\n\n",
+          "type_": "String"
+        },
+        {
+          "name": "vaultUri",
+          "description": "The URI of the vault for performing operations on keys and secrets. This property is readonly\n\n",
+          "type_": "String"
+        },
+        {
+          "name": "provisioningState",
+          "description": "The current provisioning state..\n\n",
+          "type_": "String"
+        }
+      ]
+    },
+    {
+      "name": "delete-key-vault",
+      "url_path": "",
+      "http_method": "DELETE",
+      "description": "Deletes the specified key vault",
+      "context_path": "KeyVault",
+      "root_object": "",
+      "headers": [
+        {
+          "Content-Type": "application/json"
+        }
+      ],
+      "unique_key": "",
+      "body_format": {
+      },
+      "upload_file": false,
+      "returns_file": false,
+      "returns_entry_file": false,
+      "arguments": [
+        {
+          "name": "vault_name",
+          "description": "The name of the vault to delete",
+          "required": true,
+          "is_array": false,
+          "default_value": "",
+          "predefined_values": [],
+          "ref": null,
+          "type_": null,
+          "in_": "url ",
+          "in_object": []
+        }
+      ],
+      "outputs": [
+      ]
+    },
+    {
+      "name": "get-key-vault",
+      "url_path": "",
+      "http_method": "GET",
+      "description": "Gets the specified key vault.",
+      "context_path": "KeyVault",
+      "root_object": "",
+      "headers": [
+        {
+          "Content-Type": "application/json"
+        }
+      ],
+      "unique_key": "",
+      "body_format": {
+      },
+      "upload_file": false,
+      "returns_file": false,
+      "returns_entry_file": false,
+      "arguments": [
+        {
+          "name": "vault_name",
+          "description": "key vault's name",
+          "required": true,
+          "is_array": false,
+          "default_value": null,
+          "predefined_values": [],
+          "ref": null,
+          "type_": null,
+          "in_": "url",
+          "in_object": []
+        }
+      ],
+      "outputs": [
+        {
+          "name": "id",
+          "description": "resource id.",
+          "type_": "String"
+        },
+        {
+          "name": "name",
+          "description": "key vault name.",
+          "type_": "String"
+        },
+        {
+          "name": "type",
+          "description": "resource type in Azure.",
+          "type_": "String"
+        },
+        {
+          "name": "location",
+          "description": "Key Vault location.",
+          "type_": "String"
+        },
+        {
+          "name": "tags",
+          "description": "Tags assigned to the key vault resource.",
+          "type_": "String"
+        },
+        {
+          "name": "properties.sku.family",
+          "description": "SKU family name.",
+          "type_": "String"
+        },
+        {
+          "name": "properties.sku.name",
+          "description": "SKU name to specify whether the key vault is a standard vault or a premium vault.",
+          "type_": "String"
+        },
+        {
+          "name": "tenantId",
+          "description": "The Azure Active Directory tenant ID that should be used for authenticating requests to the key vault.",
+          "type_": "String"
+        },
+        {
+          "name": "accessPolicies.tenantId",
+          "description": "The Azure Active Directory tenant ID that should be used for authenticating requests to the key vault",
+          "type_": "String"
+        },
+        {
+          "name": "accessPolicies.objectId",
+          "description": "The object ID of a user, service principal or security group in the Azure Active Directory tenant for the vault. The object ID must be unique for the list of access policies.",
+          "type_": "String"
+        },
+        {
+          "name": "accessPolicies.permissions.keys",
+          "description": "Permissions to keys",
+          "type_": null
+        },
+        {
+          "name": "accessPolicies.permissions.secrets",
+          "description": "Permissions to secrets",
+          "type_": null
+        },
+        {
+          "name": "accessPolicies.permissions.certificates",
+          "description": "Permissions to certificates",
+          "type_": null
+        },
+        {
+          "name": "enabledForDeployment",
+          "description": "Property to specify whether Azure Virtual Machines are permitted to retrieve certificates stored as secrets from the key vault.",
+          "type_": "Boolean"
+        },
+        {
+          "name": "enabledForDiskEncryption",
+          "description": "Property to specify whether Azure Disk Encryption is permitted to retrieve secrets from the vault and unwrap keys.",
+          "type_": "Boolean"
+        },
+        {
+          "name": "enabledForTemplateDeployment",
+          "description": "Property to specify whether Azure Resource Manager is permitted to retrieve secrets from the key vault.",
+          "type_": "Boolean"
+        },
+        {
+          "name": "enableSoftDelete",
+          "description": "Property to specify whether the 'soft delete' functionality is enabled for this key vault. If it's not set to any value(true or false) when creating new key vault, it will be set to true by default. Once set to true, it cannot be reverted to false.",
+          "type_": "Boolean"
+        },
+        {
+          "name": "softDeleteRetentionInDays",
+          "description": "softDelete data retention days. It accepts >=7 and <=90.",
+          "type_": "Number"
+        },
+        {
+          "name": "vaultUri",
+          "description": "The URI of the vault for performing operations on keys and secrets. This property is readonly",
+          "type_": "String"
+        },
+        {
+          "name": "RegisteringDns",
+          "description": "Provisioning state of the vault.",
+          "type_": "String"
+        }
+      ]
+    },
+    {
+      "name": "list-key-vaults",
+      "url_path": "",
+      "http_method": "GET",
+      "description": "The List operation gets information about the vaults associated with the subscription",
+      "context_path": "KeyVault",
+      "root_object": "",
+      "headers": [
+        {
+          "Content-Type": "application/json"
+        }
+      ],
+      "unique_key": "",
+      "body_format": {
+      },
+      "upload_file": false,
+      "returns_file": false,
+      "returns_entry_file": false,
+      "arguments": [
+      ],
+      "outputs": [
+        {
+          "name": "id",
+          "description": "resource id.",
+          "type_": "String"
+        },
+        {
+          "name": "name",
+          "description": "key vault name.",
+          "type_": "String"
+        },
+        {
+          "name": "type",
+          "description": "resource type in Azure.",
+          "type_": "String"
+        },
+        {
+          "name": "location",
+          "description": "Key Vault location.",
+          "type_": "String"
+        },
+        {
+          "name": "tags",
+          "description": "Tags assigned to the key vault resource.",
+          "type_": "String"
+        },
+        {
+          "name": "properties.sku.family",
+          "description": "SKU family name.",
+          "type_": "String"
+        },
+        {
+          "name": "properties.sku.name",
+          "description": "SKU name to specify whether the key vault is a standard vault or a premium vault.",
+          "type_": "String"
+        },
+        {
+          "name": "tenantId",
+          "description": "The Azure Active Directory tenant ID that should be used for authenticating requests to the key vault.",
+          "type_": "String"
+        },
+        {
+          "name": "accessPolicies.tenantId",
+          "description": "The Azure Active Directory tenant ID that should be used for authenticating requests to the key vault",
+          "type_": "String"
+        },
+        {
+          "name": "accessPolicies.objectId",
+          "description": "The object ID of a user, service principal or security group in the Azure Active Directory tenant for the vault. The object ID must be unique for the list of access policies.",
+          "type_": "String"
+        },
+        {
+          "name": "accessPolicies.permissions.keys",
+          "description": "Permissions to keys",
+          "type_": null
+        },
+        {
+          "name": "accessPolicies.permissions.secrets",
+          "description": "Permissions to secrets",
+          "type_": null
+        },
+        {
+          "name": "accessPolicies.permissions.certificates",
+          "description": "Permissions to certificates",
+          "type_": null
+        },
+        {
+          "name": "enabledForDeployment",
+          "description": "Property to specify whether Azure Virtual Machines are permitted to retrieve certificates stored as secrets from the key vault.",
+          "type_": "Boolean"
+        },
+        {
+          "name": "enabledForDiskEncryption",
+          "description": "Property to specify whether Azure Disk Encryption is permitted to retrieve secrets from the vault and unwrap keys.",
+          "type_": "Boolean"
+        },
+        {
+          "name": "enabledForTemplateDeployment",
+          "description": "Property to specify whether Azure Resource Manager is permitted to retrieve secrets from the key vault.",
+          "type_": "Boolean"
+        },
+        {
+          "name": "enableSoftDelete",
+          "description": "Property to specify whether the 'soft delete' functionality is enabled for this key vault. If it's not set to any value(true or false) when creating new key vault, it will be set to true by default. Once set to true, it cannot be reverted to false.",
+          "type_": "Boolean"
+        },
+        {
+          "name": "softDeleteRetentionInDays",
+          "description": "softDelete data retention days. It accepts >=7 and <=90.",
+          "type_": "Number"
+        },
+        {
+          "name": "vaultUri",
+          "description": "The URI of the vault for performing operations on keys and secrets. This property is readonly",
+          "type_": "String"
+        },
+        {
+          "name": "RegisteringDns",
+          "description": "Provisioning state of the vault.",
+          "type_": "String"
+        }
+      ]
+    },
+    {
+      "name": "update-access-policy",
+      "url_path": "",
+      "http_method": "PUT",
+      "description": "Updates access policies in a key vault in the specified subscription.",
+      "context_path": "VaultAccessPolicy",
+      "root_object": "",
+      "headers": [
+        {
+          "Content-Type": "application/json"
+        }
+      ],
+      "unique_key": "",
+      "body_format": {
+        "properties": {
+          "accessPolicies": [
+            {
+              "tenantId": "{tenant_id}",
+              "objectId": "{object_id}",
+              "permissions": {
+                "keys": [
+                ],
+                "secrets": [
+                ],
+                "certificates": [
+                ]
+              }
+            }
+          ]
+        }
+      },
+      "upload_file": "{upload_file}",
+      "returns_file": "{returns_file}",
+      "returns_entry_file": "{returns_entry_file}",
+      "arguments": [
+        {
+          "name": "tenant_id",
+          "description": "",
+          "required": true,
+          "is_array": false,
+          "default_value": "",
+          "predefined_values": [],
+          "ref": null,
+          "type_": null,
+          "in_": "body",
+          "in_object": []
+        },
+        {
+          "name": "location",
+          "description": "The supported Azure location where the key vault should be created",
+          "required": true,
+          "is_array": false,
+          "default_value": "",
+          "predefined_values": [],
+          "ref": null,
+          "type_": null,
+          "in_": "body",
+          "in_object": []
+        },
+        {
+          "name": "properties",
+          "description": "Properties of the vault",
+          "required": true,
+          "is_array": false,
+          "default_value": "",
+          "predefined_values": [],
+          "ref": null,
+          "type_": null,
+          "in_": "body",
+          "in_object": []
+        },
+        {
+          "name": "tags",
+          "description": "The tags that will be assigned to the key vault.",
+          "required": false,
+          "is_array": false,
+          "default_value": "",
+          "predefined_values": [],
+          "ref": null,
+          "type_": null,
+          "in_": "body",
+          "in_object": []
+        },
+        {
+          "name": "family",
+          "description": "SKU family name",
+          "required": false,
+          "is_array": false,
+          "default_value": "",
+          "predefined_values": [],
+          "ref": null,
+          "type_": null,
+          "in_": "body",
+          "in_object": []
+        },
+        {
+          "name": "name",
+          "description": "SKU name to specify whether the key vault is a standard vault or a premium vault.",
+          "required": false,
+          "is_array": false,
+          "default_value": "",
+          "predefined_values": [],
+          "ref": null,
+          "type_": null,
+          "in_": "body",
+          "in_object": []
+        },
+        {
+          "name": "object_id",
+          "description": "The object ID of a user, service principal or security group in the Azure Active Directory tenant for the vault. The object ID must be unique for the list of access policies.",
+          "required": false,
+          "is_array": false,
+          "default_value": "",
+          "predefined_values": [],
+          "ref": null,
+          "type_": null,
+          "in_": "body",
+          "in_object": []
+        },
+        {
+          "name": "keys",
+          "description": "Permissions to keys",
+          "required": false,
+          "is_array": false,
+          "default_value": "",
+          "predefined_values": [
+            "encrypt",
+            "decrypt",
+            "wrapKey",
+            "unwrapKey",
+            "sign",
+            "verify",
+            "get",
+            "list",
+            "create",
+            "update",
+            "import",
+            "delete",
+            "backup",
+            "restore",
+            "recover",
+            "purge"
+          ],
+          "ref": null,
+          "type_": null,
+          "in_": "body",
+          "in_object": []
+        },
+        {
+          "name": "secrets",
+          "description": "Permissions to secrets",
+          "required": false,
+          "is_array": false,
+          "default_value": "",
+          "predefined_values": [
+            "get",
+            "list",
+            "set",
+            "delete",
+            "backup",
+            "restore",
+            "recover",
+            "purge"
+          ],
+          "ref": null,
+          "type_": null,
+          "in_": "body",
+          "in_object": []
+        },
+        {
+          "name": "certificates",
+          "description": "Permissions to certificates",
+          "required": false,
+          "is_array": false,
+          "default_value": "",
+          "predefined_values": [
+            "get",
+            "list",
+            "delete",
+            "create",
+            "import",
+            "update",
+            "managecontacts",
+            "getissuers",
+            "listissuers",
+            "setissuers",
+            "deleteissuers",
+            "manageissuers",
+            "recover",
+            "purge"
+          ],
+          "ref": null,
+          "type_": null,
+          "in_": "body",
+          "in_object": []
+        },
+        {
+          "name": "enabled_for_deployment",
+          "description": "",
+          "required": false,
+          "is_array": false,
+          "default_value": "",
+          "predefined_values": [],
+          "ref": null,
+          "type_": "boolean",
+          "in_": "body",
+          "in_object": []
+        },
+        {
+          "name": "enabled_for_disk_encryption",
+          "description": "",
+          "required": false,
+          "is_array": false,
+          "default_value": "",
+          "predefined_values": [],
+          "ref": null,
+          "type_": "boolean",
+          "in_": "body",
+          "in_object": []
+        },
+        {
+          "name": "enabled_for_template_deployment",
+          "description": "",
+          "required": false,
+          "is_array": false,
+          "default_value": "",
+          "predefined_values": [],
+          "ref": null,
+          "type_": "boolean",
+          "in_": "body",
+          "in_object": []
+        }
+      ],
+      "outputs": [
+        {
+          "name": "id",
+          "description": "resource id",
+          "type_": "String"
+        },
+        {
+          "name": "type",
+          "description": "resource type in Azure",
+          "type_": "String"
+        },
+        {
+          "name": "accessPolicies.tenantId",
+          "description": "The Azure Active Directory tenant ID that should be used for authenticating requests to the key vault.",
+          "type_": "String"
+        },
+        {
+          "name": "accessPolicies.objectId",
+          "description": "The object ID of a user, service principal or security group in the Azure Active Directory tenant for the vault. The object ID must be unique for the list of access policies.",
+          "type_": "String"
+        },
+        {
+          "name": "accessPolicies.permissions.keys",
+          "description": "Permissions to keys",
+          "type_": null
+        },
+        {
+          "name": "accessPolicies.permissions.secrets",
+          "description": "Permissions to secrets",
+          "type_": null
+        },
+        {
+          "name": "accessPolicies.permissions.certificates",
+          "description": "Permissions to certificates",
+          "type_": null
+        }
+      ]
+    },
+    {
+      "name": "get-key",
+      "url_path": "/keys/?api-version=7.2",
+      "http_method": "GET",
+      "description": "Gets the public part of a stored key",
+      "context_path": "Key",
+      "root_object": "",
+      "headers": [
+        {
+          "Content-Type": "application/json"
+        }
+      ],
+      "unique_key": "",
+      "body_format": {
+      },
+      "upload_file": false,
+      "returns_file": false,
+      "returns_entry_file": false,
+      "arguments": [
+        {
+          "name": "vault_name",
+          "description": "The vault name",
+          "required": true,
+          "is_array": false,
+          "default_value": "",
+          "predefined_values": [],
+          "ref": null,
+          "type_": null,
+          "in_": "url",
+          "in_object": []
+        },
+        {
+          "name": "key_name",
+          "description": "The name of the key to get.",
+          "required": true,
+          "is_array": false,
+          "default_value": "",
+          "predefined_values": [],
+          "ref": null,
+          "type_": null,
+          "in_": "url",
+          "in_object": []
+        }
+      ],
+      "outputs": [
+        {
+          "name": "key.kid",
+          "description": "Key identifier",
+          "type_": "String"
+        },
+        {
+          "name": "kty",
+          "description": "JsonWebKey Key Type (kty)",
+          "type_": "String"
+        },
+        {
+          "name": "key_ops",
+          "description": "Supported key operations.",
+          "type_": null
+        },
+        {
+          "name": "n",
+          "description": "RSA modulus.",
+          "type_": "String"
+        },
+        {
+          "name": "e",
+          "description": "RSA public exponent",
+          "type_": "String"
+        },
+        {
+          "name": "attributes.enabled",
+          "description": "Determines whether the object is enabled.\n\n",
+          "type_": "Boolean"
+        },
+        {
+          "name": "attributes.created",
+          "description": "Creation time in UTC.\n\n",
+          "type_": "Date"
+        },
+        {
+          "name": "attributes.updated",
+          "description": "Last updated time in UTC.",
+          "type_": "Date"
+        },
+        {
+          "name": "attributes.recoveryLevel",
+          "description": "Reflects the deletion recovery level currently in effect for keys in the current vault. If it contains 'Purgeable' the key can be permanently deleted by a privileged user; otherwise, only the system can purge the key, at the end of the retention interval.",
+          "type_": "String"
+        },
+        {
+          "name": "tags",
+          "description": "\t\nApplication specific metadata in the form of key-value pairs",
+          "type_": null
+        }
+      ]
+    },
+    {
+      "name": "list-keys",
+      "url_path": "/keys?api-version=7.2",
+      "http_method": "GET",
+      "description": "Lists keys in the specified vault",
+      "context_path": "Key",
+      "root_object": "",
+      "headers": [
+        {
+          "Content-Type": "application/json"
+        }
+      ],
+      "unique_key": "",
+      "body_format": {
+      },
+      "upload_file": false,
+      "returns_file": false,
+      "returns_entry_file": false,
+      "arguments": [
+        {
+          "name": "vault_name",
+          "description": "The vault name",
+          "required": true,
+          "is_array": false,
+          "default_value": "",
+          "predefined_values": [],
+          "ref": null,
+          "type_": null,
+          "in_": "url",
+          "in_object": []
+        }
+      ],
+      "outputs": [
+        {
+          "name": "value.kid",
+          "description": "Key identifier",
+          "type_": "String"
+        },
+        {
+          "name": "attributes.enabled",
+          "description": "Determines whether the object is enabled",
+          "type_": "Boolean"
+        },
+        {
+          "name": "attributes.nbf",
+          "description": "Not before date in UTC.",
+          "type_": "Date"
+        },
+        {
+          "name": "attributes.exp",
+          "description": "Expiry date in UTC.",
+          "type_": "Date"
+        },
+        {
+          "name": "attributes.created",
+          "description": "Creation time in UTC.",
+          "type_": "Date"
+        },
+        {
+          "name": "attributes.updated",
+          "description": "Last updated time in UTC",
+          "type_": "Date"
+        },
+        {
+          "name": "attributes.recoveryLevel",
+          "description": "Reflects the deletion recovery level currently in effect for keys in the current vault. If it contains 'Purgeable' the key can be permanently deleted by a privileged user; otherwise, only the system can purge the key, at the end of the retention interval.",
+          "type_": "String"
+        },
+        {
+          "name": "attributes.recoverableDays",
+          "description": "softDelete data retention days. Value should be >=7 and <=90 when softDelete enabled, otherwise 0.",
+          "type_": "Number"
+        },
+        {
+          "name": "value.managed",
+          "description": "True if the key's lifetime is managed by key vault. If this is a key backing a certificate, then managed will be true.",
+          "type_": "Boolean"
+        }
+      ]
+    },
+    {
+      "name": "delete-key",
+      "url_path": "https://{vault_name}.vault.azure.net/keys/{key_name}?api-version=7.2",
+      "http_method": "DELETE",
+      "description": "Deletes a key of any type from storage in Azure Key vault.",
+      "context_path": "Key",
+      "root_object": "",
+      "headers": [
+        {
+          "Content-Type": "application/json"
+        }
+      ],
+      "unique_key": "",
+      "body_format": {
+      },
+      "upload_file": false,
+      "returns_file": false,
+      "returns_entry_file": false,
+      "arguments": [
+        {
+          "name": "vault_name",
+          "description": "The vault name",
+          "required": true,
+          "is_array": false,
+          "default_value": "",
+          "predefined_values": [],
+          "ref": null,
+          "type_": null,
+          "in_": "url",
+          "in_object": []
+        },
+        {
+          "name": "key_name",
+          "description": "The name of the key to delete.",
+          "required": true,
+          "is_array": false,
+          "default_value": "",
+          "predefined_values": [],
+          "ref": null,
+          "type_": null,
+          "in_": "url",
+          "in_object": []
+        }
+      ],
+      "outputs": [
+        {
+          "name": "recoveryId",
+          "description": "The url of the recovery object, used to identify and recover the deleted key.",
+          "type_": "String"
+        },
+        {
+          "name": "deletedDate",
+          "description": "\t\nThe time when the key was deleted, in UTC",
+          "type_": "Date"
+        },
+        {
+          "name": "key.kid",
+          "description": "Key identifier",
+          "type_": "String"
+        },
+        {
+          "name": "key.kty",
+          "description": "JsonWebKey Key Type (kty)",
+          "type_": "String"
+        },
+        {
+          "name": "key.key_ops",
+          "description": "Supported key operations.",
+          "type_": null
+        },
+        {
+          "name": "key.n",
+          "description": "RSA modulus.",
+          "type_": "String"
+        },
+        {
+          "name": "key.e",
+          "description": "RSA public exponent",
+          "type_": "String"
+        },
+        {
+          "name": "attributes.enabled",
+          "description": "Determines whether the object is enabled.\n\n",
+          "type_": "Boolean"
+        },
+        {
+          "name": "attributes.created",
+          "description": "Creation time in UTC",
+          "type_": "Number"
+        },
+        {
+          "name": "attributes.updated",
+          "description": "Last updated time in UTC.",
+          "type_": "Number"
+        },
+        {
+          "name": "attributes.recoveryLevel",
+          "description": "Reflects the deletion recovery level currently in effect for keys in the current vault. If it contains 'Purgeable' the key can be permanently deleted by a privileged user; otherwise, only the system can purge the key, at the end of the retention interval.",
+          "type_": "String"
+        },
+        {
+          "name": "tags",
+          "description": "\t\nApplication specific metadata in the form of key-value pairs",
+          "type_": null
+        }
+      ]
+    },
+    {
+      "name": "get-secret",
+      "url_path": "{vaultBaseUrl}/secrets/{secret-name}/{secret-version}?api-version=7.2",
+      "http_method": "GET",
+      "description": "Get a specified secret from a given key vault.\nThe GET operation is applicable to any secret stored in Azure Key Vault. This operation requires the secrets/get permission.",
+      "context_path": "Secret",
+      "root_object": "",
+      "headers": [
+        {
+          "Content-Type": "application/json"
+        }
+      ],
+      "unique_key": "",
+      "body_format": {
+      },
+      "upload_file": false,
+      "returns_file": false,
+      "returns_entry_file": false,
+      "arguments": [
+        {
+          "name": "vault_name",
+          "description": "The vault name",
+          "required": true,
+          "is_array": false,
+          "default_value": "",
+          "predefined_values": [],
+          "ref": null,
+          "type_": null,
+          "in_": "url",
+          "in_object": []
+        },
+        {
+          "name": "secret_name",
+          "description": "The name of the secret to get.",
+          "required": true,
+          "is_array": false,
+          "default_value": "",
+          "predefined_values": [],
+          "ref": null,
+          "type_": null,
+          "in_": "url",
+          "in_object": []
+        }
+      ],
+      "outputs": [
+        {
+          "name": "value",
+          "description": "secret's value",
+          "type_": "String"
+        },
+        {
+          "name": "id",
+          "description": "secret's id",
+          "type_": "String"
+        },
+        {
+          "name": "managed",
+          "description": "\t\nTrue if the secret's lifetime is managed by key vault. If this is a secret backing a certificate, then managed will be true.",
+          "type_": "String"
+        },
+        {
+          "name": "attributes.enabled",
+          "description": "Determines whether the object is enabled.\n\n",
+          "type_": "Bolean"
+        },
+        {
+          "name": "attributes.created",
+          "description": "Creation time in UTC.",
+          "type_": "Date"
+        },
+        {
+          "name": "attributes.updated",
+          "description": "Last updated time in UTC.",
+          "type_": "Date"
+        },
+        {
+          "name": "attributes.recoveryLevel",
+          "description": "Reflects the deletion recovery level currently in effect for secrets in the current vault. If it contains 'Purgeable', the secret can be permanently deleted by a privileged user; otherwise, only the system can purge the secret, at the end of the retention interval.",
+          "type_": "String"
+        }
+      ]
+    },
+    {
+      "name": "list-secrets",
+      "url_path": "{vaultBaseUrl}/secrets?api-version=7.2",
+      "http_method": "GET",
+      "description": "List secrets in a specified key vault.",
+      "context_path": "Key",
+      "root_object": "",
+      "headers": [
+        {
+          "Content-Type": "application/json"
+        }
+      ],
+      "unique_key": "",
+      "body_format": {
+      },
+      "upload_file": false,
+      "returns_file": false,
+      "returns_entry_file": false,
+      "arguments": [
+        {
+          "name": "vault_name",
+          "description": "The vault name",
+          "required": true,
+          "is_array": false,
+          "default_value": "",
+          "predefined_values": [],
+          "ref": null,
+          "type_": null,
+          "in_": "url",
+          "in_object": []
+        }
+      ],
+      "outputs": [
+        {
+          "name": "id",
+          "description": "secret's id",
+          "type_": "String"
+        },
+        {
+          "name": "managed",
+          "description": "\t\nTrue if the secret's lifetime is managed by key vault. If this is a secret backing a certificate, then managed will be true.",
+          "type_": "String"
+        },
+        {
+          "name": "attributes.enabled",
+          "description": "Determines whether the object is enabled.\n\n",
+          "type_": "Bolean"
+        },
+        {
+          "name": "attributes.nbf",
+          "description": "Not before date in UTC.",
+          "type_": "Date"
+        },
+        {
+          "name": "attributes.exp",
+          "description": "Expiry date in UTC.",
+          "type_": "Date"
+        },
+        {
+          "name": "attributes.created",
+          "description": "Creation time in UTC.",
+          "type_": "Date"
+        },
+        {
+          "name": "attributes.updated",
+          "description": "Last updated time in UTC.",
+          "type_": "Date"
+        },
+        {
+          "name": "attributes.recoveryLevel",
+          "description": "Reflects the deletion recovery level currently in effect for secrets in the current vault. If it contains 'Purgeable', the secret can be permanently deleted by a privileged user; otherwise, only the system can purge the secret, at the end of the retention interval.",
+          "type_": "String"
+        },
+        {
+          "name": "attributes.recoverableDays",
+          "description": "softDelete data retention days. Value should be >=7 and <=90 when softDelete enabled, otherwise 0.",
+          "type_": "Number"
+        }
+      ]
+    },
+    {
+      "name": "delete-secret",
+      "url_path": "https://{vault_name}.vault.azure.net/secret/{secret_name}?api-version=7.2",
+      "http_method": "DELETE",
+      "description": "Deletes a secret from a specified key vault.",
+      "context_path": "Secret",
+      "root_object": "",
+      "headers": [
+        {
+          "Content-Type": "application/json"
+        }
+      ],
+      "unique_key": "",
+      "body_format": {
+      },
+      "upload_file": false,
+      "returns_file": false,
+      "returns_entry_file": false,
+      "arguments": [
+        {
+          "name": "vault_name",
+          "description": "The vault name",
+          "required": true,
+          "is_array": false,
+          "default_value": "",
+          "predefined_values": [],
+          "ref": null,
+          "type_": null,
+          "in_": "url",
+          "in_object": []
+        },
+        {
+          "name": "secret_name",
+          "description": "The name of the secret to delete.",
+          "required": true,
+          "is_array": false,
+          "default_value": "",
+          "predefined_values": [],
+          "ref": null,
+          "type_": "str",
+          "in_": "url",
+          "in_object": []
+        }
+      ],
+      "outputs": [
+        {
+          "name": "recoveryId",
+          "description": "\t\nThe url of the recovery object, used to identify and recover the deleted secret.",
+          "type_": "String"
+        },
+        {
+          "name": "deletedDate",
+          "description": "\t\nThe time when the secret was deleted, in UTC",
+          "type_": "Date"
+        },
+        {
+          "name": "scheduledPurgeDate",
+          "description": "The time when the secret is scheduled to be purged, in UTC",
+          "type_": "Date"
+        },
+        {
+          "name": "id",
+          "description": "id of the deleted secret",
+          "type_": "String"
+        },
+        {
+          "name": "attributes.enabled",
+          "description": "Determines whether the object is enabled.\n\n",
+          "type_": "Boolean"
+        },
+        {
+          "name": "attributes.created",
+          "description": "\t\nCreation time in UTC.",
+          "type_": "Date"
+        },
+        {
+          "name": "attributes.updated",
+          "description": "Last updated time in UTC.",
+          "type_": "Date"
+        },
+        {
+          "name": "attributes.recoveryLevel",
+          "description": "Reflects the deletion recovery level currently in effect for secrets in the current vault",
+          "type_": "String"
+        }
+      ]
+    },
+    {
+      "name": "get-certificate",
+      "url_path": "{vaultBaseUrl}/certificates/{certificate-name}/{certificate-version}?api-version=7.2",
+      "http_method": "GET",
+      "description": "Gets information about a certificate.\nGets information about a specific certificate. This operation requires the certificates/get permission.",
+      "context_path": "Certificate",
+      "root_object": "",
+      "headers": [
+        {
+          "Content-Type": "application/json"
+        }
+      ],
+      "unique_key": "",
+      "body_format": {
+      },
+      "upload_file": false,
+      "returns_file": false,
+      "returns_entry_file": false,
+      "arguments": [
+        {
+          "name": "vault_name",
+          "description": "The vault name",
+          "required": true,
+          "is_array": false,
+          "default_value": "",
+          "predefined_values": [],
+          "ref": null,
+          "type_": null,
+          "in_": "url",
+          "in_object": []
+        },
+        {
+          "name": "certificate_name",
+          "description": "The name of the certificate to get.",
+          "required": true,
+          "is_array": false,
+          "default_value": "",
+          "predefined_values": [],
+          "ref": null,
+          "type_": null,
+          "in_": "url",
+          "in_object": []
+        }
+      ],
+      "outputs": [
+        {
+          "name": "id",
+          "description": "The certificate id.\n\n",
+          "type_": "String"
+        },
+        {
+          "name": "kid",
+          "description": "The key id.",
+          "type_": "String"
+        },
+        {
+          "name": "sid",
+          "description": "The secret id.",
+          "type_": "String"
+        },
+        {
+          "name": "x5t",
+          "description": "Thumbprint of the certificate.",
+          "type_": "String"
+        },
+        {
+          "name": "cer",
+          "description": "\t\nCER contents of x509 certificate.",
+          "type_": "String"
+        },
+        {
+          "name": "attributes.enabled",
+          "description": "Determines whether the object is enabled.\n\n",
+          "type_": "Boolean"
+        },
+        {
+          "name": "attributes.nbf",
+          "description": "Not before date in UTC.\n\n",
+          "type_": "Date"
+        },
+        {
+          "name": "attributes.exp",
+          "description": "Expiry date in UTC.\n\n",
+          "type_": "Date"
+        },
+        {
+          "name": "attributes.created",
+          "description": "Creation time in UTC.\n\n",
+          "type_": "Date"
+        },
+        {
+          "name": "attributes.updated",
+          "description": "Last updated time in UTC.\n\n",
+          "type_": "Date"
+        },
+        {
+          "name": "attributes.recoveryLevel",
+          "description": "Reflects the deletion recovery level currently in effect for certificates in the current vault. If it contains 'Purgeable', the certificate can be permanently deleted by a privileged user; otherwise, only the system can purge the certificate, at the end of the retention interval.",
+          "type_": "String"
+        },
+        {
+          "name": "policy.id",
+          "description": "The certificate id.\n\n",
+          "type_": "String"
+        },
+        {
+          "name": "policy.key_props.exportable",
+          "description": "Not supported in this version. Indicates if the private key can be exported.\n\n",
+          "type_": "Boolean"
+        },
+        {
+          "name": "policy.key_props.kty",
+          "description": "The type of key pair to be used for the certificate.",
+          "type_": "String"
+        },
+        {
+          "name": "policy.key_props.key_size",
+          "description": "The key size in bits. For example: 2048, 3072, or 4096 for RSA.",
+          "type_": "Number"
+        },
+        {
+          "name": "policy.key_props.reuse_key",
+          "description": "Indicates if the same key pair will be used on certificate renewal.\n\n",
+          "type_": "Boolean"
+        },
+        {
+          "name": "policy.secret_props.contentType",
+          "description": "The media type (MIME type).\n\n",
+          "type_": "String"
+        },
+        {
+          "name": "policy.x509_props.subject",
+          "description": "The subject name. Should be a valid X509 distinguished Name.\n\n",
+          "type_": "String"
+        },
+        {
+          "name": "policy.x509_props.ekus",
+          "description": "The enhanced key usage.\n\n",
+          "type_": null
+        },
+        {
+          "name": "policy.x509_props.key_usage",
+          "description": "List of key usages.\n\n",
+          "type_": null
+        },
+        {
+          "name": "policy.x509_props.validity_months",
+          "description": "The duration that the certificate is valid in months.\n\n",
+          "type_": "Number"
+        },
+        {
+          "name": "policy.lifetime_actions.trigger.days_before_expiry",
+          "description": "\t\nDays before expiry to attempt renewal. Value should be between 1 and validity_in_months multiplied by 27",
+          "type_": "Number"
+        },
+        {
+          "name": "policy.lifetime_actions.trigger.lifetime_percentage",
+          "description": "Percentage of lifetime at which to trigger. Value should be between 1 and 99.\n\n",
+          "type_": "Number"
+        },
+        {
+          "name": "policy.lifetime_actions.action.action_type",
+          "description": "The type of the action.\n\n",
+          "type_": "String"
+        },
+        {
+          "name": "policy.issuer.name",
+          "description": "\t\nName of the referenced issuer object or reserved names; for example, 'Self' or 'Unknown'.",
+          "type_": "String"
+        },
+        {
+          "name": "policy.attributes.enabled",
+          "description": "Determines whether the object is enabled.\n\n",
+          "type_": "Boolean"
+        },
+        {
+          "name": "policy.attributes.created",
+          "description": "Creation time in UTC.",
+          "type_": "Date"
+        },
+        {
+          "name": "policy.attributes.updated",
+          "description": "Last updated time in UTC",
+          "type_": "Date"
+        }
+      ]
+    },
+    {
+      "name": "list-certificates",
+      "url_path": "{vaultBaseUrl}/certificates?api-version=7.2",
+      "http_method": "GET",
+      "description": "List certificates in a specified key vault",
+      "context_path": "Certificate",
+      "root_object": "",
+      "headers": [
+        {
+          "Content-Type": "application/json"
+        }
+      ],
+      "unique_key": "",
+      "body_format": {
+      },
+      "upload_file": false,
+      "returns_file": false,
+      "returns_entry_file": false,
+      "arguments": [
+        {
+          "name": "vault_name",
+          "description": "The vault name",
+          "required": true,
+          "is_array": false,
+          "default_value": "",
+          "predefined_values": [],
+          "ref": null,
+          "type_": null,
+          "in_": "url",
+          "in_object": []
+        },
+        {
+          "name": "max_results",
+          "description": "maximum number of certificates",
+          "required": false,
+          "is_array": false,
+          "default_value": "10",
+          "predefined_values": [],
+          "ref": null,
+          "type_": "int",
+          "in_": "url",
+          "in_object": []
+        }
+      ],
+      "outputs": [
+        {
+          "name": "value.id",
+          "description": "certificate's id",
+          "type_": "String"
+        },
+        {
+          "name": "value.x5t",
+          "description": "",
+          "type_": "String"
+        },
+        {
+          "name": "attributes.enabled",
+          "description": "Determines whether the object is enabled.\n\n",
+          "type_": "Boolean"
+        },
+        {
+          "name": "attributes.nbf",
+          "description": "Not before date in UTC.\n\n",
+          "type_": "Date"
+        },
+        {
+          "name": "attributes.exp",
+          "description": "\t\nExpiry date in UTC.",
+          "type_": "Date"
+        },
+        {
+          "name": "attributes.created",
+          "description": "Creation time in UTC.\n\n",
+          "type_": "Date"
+        },
+        {
+          "name": "attributes.updated",
+          "description": "Last updated time in UTC.\n\n",
+          "type_": "Date"
+        }
+      ]
+    },
+    {
+      "name": "delete-certificate",
+      "url_path": "https://{vault_name}.vault.azure.net/certificate/{certificate_name}?api-version=7.2",
+      "http_method": "DELETE",
+      "description": "Deletes a certificate from a specified key vault.",
+      "context_path": "Certificate",
+      "root_object": "",
+      "headers": [
+        {
+          "Content-Type": "application/json"
+        }
+      ],
+      "unique_key": "",
+      "body_format": {
+      },
+      "upload_file": false,
+      "returns_file": false,
+      "returns_entry_file": false,
+      "arguments": [
+        {
+          "name": "vault_name",
+          "description": "The vault name",
+          "required": true,
+          "is_array": false,
+          "default_value": "",
+          "predefined_values": [],
+          "ref": null,
+          "type_": null,
+          "in_": "url",
+          "in_object": []
+        },
+        {
+          "name": "certificate_name",
+          "description": "The name of the certificate to delete.",
+          "required": true,
+          "is_array": false,
+          "default_value": "",
+          "predefined_values": [],
+          "ref": null,
+          "type_": null,
+          "in_": "url",
+          "in_object": []
+        }
+      ],
+      "outputs": [
+        {
+          "name": "recoveryId",
+          "description": "The url of the recovery object, used to identify and recover the deleted certificate.\n\n",
+          "type_": "String"
+        },
+        {
+          "name": "deletedDate",
+          "description": "The time when the certificate was deleted, in UTC\n\n",
+          "type_": "Date"
+        },
+        {
+          "name": "scheduledPurgeDate",
+          "description": "The time when the certificate is scheduled to be purged, in UTC\n\n",
+          "type_": "Date"
+        },
+        {
+          "name": "id",
+          "description": "certificate's id",
+          "type_": "String"
+        },
+        {
+          "name": "kid",
+          "description": "The key id.\n\n",
+          "type_": "String"
+        },
+        {
+          "name": "sid",
+          "description": "The secret id.\n\n",
+          "type_": "String"
+        },
+        {
+          "name": "x5t",
+          "description": "Thumbprint of the certificate.\n\n",
+          "type_": "String"
+        },
+        {
+          "name": "cer",
+          "description": "CER contents of x509 certificate.\n\n",
+          "type_": "String"
+        },
+        {
+          "name": "attributes.enabled",
+          "description": "Determines whether the object is enabled.\n\n",
+          "type_": "Boolean"
+        },
+        {
+          "name": "attributes.nbf",
+          "description": "Not before date in UTC.\n\n",
+          "type_": "Date"
+        },
+        {
+          "name": "attributes.exp",
+          "description": "Expiry date in UTC.\n\n",
+          "type_": "Date"
+        },
+        {
+          "name": "attributes.created",
+          "description": "Creation time in UTC.\n\n",
+          "type_": "Date"
+        },
+        {
+          "name": "attributes.updated",
+          "description": "Last updated time in UTC.\n\n",
+          "type_": "Date"
+        },
+        {
+          "name": "attributes.recoveryLevel",
+          "description": "Reflects the deletion recovery level currently in effect for certificates in the current vault. If it contains 'Purgeable', the certificate can be permanently deleted by a privileged user; otherwise, only the system can purge the certificate, at the end of the retention interval.",
+          "type_": "String"
+        },
+        {
+          "name": "policy.id",
+          "description": "The certificate id.\n\n",
+          "type_": "String"
+        },
+        {
+          "name": "policy.key_props.exportable",
+          "description": "Not supported in this version. Indicates if the private key can be exported.\n\n",
+          "type_": "Boolean"
+        },
+        {
+          "name": "policy.key_props.kty",
+          "description": "The type of key pair to be used for the certificate.",
+          "type_": "String"
+        },
+        {
+          "name": "policy.key_props.key_size",
+          "description": "The key size in bits. For example: 2048, 3072, or 4096 for RSA.\n\n",
+          "type_": "Number"
+        },
+        {
+          "name": "policy.key_props.reuse_key",
+          "description": "Indicates if the same key pair will be used on certificate renewal.\n\n",
+          "type_": "Boolean"
+        },
+        {
+          "name": "policy.secret_props.contentType",
+          "description": "The media type (MIME type).\n\n",
+          "type_": "String"
+        },
+        {
+          "name": "policy.x509_props.subject",
+          "description": "The subject name. Should be a valid X509 distinguished Name",
+          "type_": "String"
+        },
+        {
+          "name": "policy.x509_props.ekus",
+          "description": "The enhanced key usage.\n\n",
+          "type_": null
+        },
+        {
+          "name": "policy.x509_props.key_usage",
+          "description": "The enhanced key usage.\n\n",
+          "type_": null
+        },
+        {
+          "name": "policy.x509_props.validity_months",
+          "description": "The duration that the certificate is valid in months.",
+          "type_": "Number"
+        },
+        {
+          "name": "policy.lifetime_actions.trigger.lifetime_percentage",
+          "description": "Percentage of lifetime at which to trigger. Value should be between 1 and 99",
+          "type_": "Number"
+        },
+        {
+          "name": "policy.lifetime_actions.action.action_type",
+          "description": "The type of the action.",
+          "type_": "String"
+        },
+        {
+          "name": "policy.issuer.name",
+          "description": "\t\nName of the referenced issuer object or reserved names; for example, 'Self' or 'Unknown'.",
+          "type_": "String"
+        },
+        {
+          "name": "policy.attributes.enabled",
+          "description": "Determines whether the object is enabled.\n\n",
+          "type_": "Boolean"
+        },
+        {
+          "name": "policy.attributes.created",
+          "description": "Creation time in UTC.",
+          "type_": "Date"
+        },
+        {
+          "name": "policy.attributes.updated",
+          "description": "Last updated time in UTC",
+          "type_": "Date"
+        }
+      ]
+    }
+  ],
+  "params": [
+    {
+      "name": "client_id",
+      "display": "Client ID",
+      "defaultvalue": "",
+      "type_": "STRING",
+      "required": true
+    },
+    {
+      "name": "client_secret",
+      "display": "Client Secret",
+      "defaultvalue": "",
+      "type_": "ENCRYPTED",
+      "required": true
+    },
+    {
+      "name": "tenant_id",
+      "display": "Tenant ID",
+      "defaultvalue": "",
+      "type_": "STRING",
+      "required": true
+    },
+    {
+      "name": "subscription_id",
+      "display": "Subscription ID",
+      "defaultvalue": "",
+      "type_": "STRING",
+      "required": true
+    },
+    {
+      "name": "resource_group_name",
+      "display": "Resource Group Name",
+      "defaultvalue": "",
+      "type_": "STRING",
+      "required": false
+    },
+    {
+      "name": "insecure",
+      "display": "Trust any certificate",
+      "defaultvalue": "",
+      "type_": "BOOLEAN",
+      "required": false
+    }
+  ]
+}

@@ -1,0 +1,1208 @@
+category: Utilities
+commonfields:
+  id: AzureKeyVault
+  version: -1
+configuration:
+- display: Client ID
+  name: client_id
+  required: true
+  type: 0
+- display: Client Secret
+  name: client_secret
+  required: true
+  type: 4
+- display: Tenant ID
+  name: tenant_id
+  required: true
+  type: 0
+- display: Subscription ID
+  name: subscription_id
+  required: true
+  type: 0
+- display: Resource Group Name
+  name: resource_group_name
+  required: false
+  type: 0
+- display: Trust any certificate
+  name: insecure
+  required: false
+  type: 8
+description: Use Key Vault to safeguard and manage cryptographic keys and secrets
+  used by cloud applications and services
+display: Azure Key Vault
+name: AzureKeyVault
+script:
+  commands:
+  - arguments:
+    - default: false
+      isArray: false
+      name: tenant_id
+      required: true
+      secret: false
+    - default: false
+      description: The supported Azure location where the key vault should be created
+      isArray: false
+      name: location
+      required: true
+      secret: false
+    - default: false
+      description: Properties of the vault
+      isArray: false
+      name: properties
+      required: true
+      secret: false
+    - default: false
+      description: The tags that will be assigned to the key vault.
+      isArray: false
+      name: tags
+      required: false
+      secret: false
+    - default: false
+      description: SKU family name
+      isArray: false
+      name: family
+      required: false
+      secret: false
+    - default: false
+      description: SKU name to specify whether the key vault is a standard vault or
+        a premium vault.
+      isArray: false
+      name: name
+      required: false
+      secret: false
+    - default: false
+      description: The object ID of a user, service principal or security group in
+        the Azure Active Directory tenant for the vault. The object ID must be unique
+        for the list of access policies.
+      isArray: false
+      name: object_id
+      required: false
+      secret: false
+    - auto: PREDEFINED
+      default: false
+      description: Permissions to keys
+      isArray: false
+      name: keys
+      predefined:
+      - encrypt
+      - decrypt
+      - wrapKey
+      - unwrapKey
+      - sign
+      - verify
+      - get
+      - list
+      - create
+      - update
+      - import
+      - delete
+      - backup
+      - restore
+      - recover
+      - purge
+      required: false
+      secret: false
+    - auto: PREDEFINED
+      default: false
+      description: Permissions to secrets
+      isArray: false
+      name: secrets
+      predefined:
+      - get
+      - list
+      - set
+      - delete
+      - backup
+      - restore
+      - recover
+      - purge
+      required: false
+      secret: false
+    - auto: PREDEFINED
+      default: false
+      description: Permissions to certificates
+      isArray: false
+      name: certificates
+      predefined:
+      - get
+      - list
+      - delete
+      - create
+      - import
+      - update
+      - managecontacts
+      - getissuers
+      - listissuers
+      - setissuers
+      - deleteissuers
+      - manageissuers
+      - recover
+      - purge
+      required: false
+      secret: false
+    - default: false
+      isArray: false
+      name: enabled_for_deployment
+      required: false
+      secret: false
+    - default: false
+      isArray: false
+      name: enabled_for_disk_encryption
+      required: false
+      secret: false
+    - default: false
+      isArray: false
+      name: enabled_for_template_deployment
+      required: false
+      secret: false
+    deprecated: false
+    description: Create or update a key vault in the specified subscription.
+    execution: false
+    name: azure-key-vault-create-or-update-key-vault
+    outputs:
+    - contextPath: AzureKeyVault.KeyVault.id
+      description: resource id
+      type: String
+    - contextPath: AzureKeyVault.KeyVault.name
+      description: key vault name
+      type: String
+    - contextPath: AzureKeyVault.KeyVault.type
+      description: resource type in Azure
+      type: String
+    - contextPath: AzureKeyVault.KeyVault.location
+      description: Key Vault location
+      type: String
+    - contextPath: AzureKeyVault.KeyVault.tags
+      description: |+
+        The tags that will be assigned to the key vault.
+
+      type: String
+    - contextPath: AzureKeyVault.KeyVault.properties.sku.family
+      description: SKU family name.
+      type: String
+    - contextPath: AzureKeyVault.KeyVault.properties.sku.name
+      description: SKU name to specify whether the key vault is a standard vault or
+        a premium vault.
+      type: String
+    - contextPath: AzureKeyVault.KeyVault.tenantId
+      description: The Azure Active Directory tenant ID that should be used for authenticating
+        requests to the key vault.
+      type: String
+    - contextPath: AzureKeyVault.KeyVault.accessPolicies.tenantId
+      description: The Azure Active Directory tenant ID that should be used for authenticating
+        requests to the key vault.
+      type: String
+    - contextPath: AzureKeyVault.KeyVault.accessPolicies.objectId
+      description: The object ID of a user, service principal or security group in
+        the Azure Active Directory tenant for the vault. The object ID must be unique
+        for the list of access policies.
+      type: String
+    - contextPath: AzureKeyVault.KeyVault.accessPolicies.permissions.keys
+      description: Permissions to keys
+      type: Unknown
+    - contextPath: AzureKeyVault.KeyVault.accessPolicies.permissions.secrets
+      description: Permissions to secrets
+      type: Unknown
+    - contextPath: AzureKeyVault.KeyVault.accessPolicies.permissions.certificates
+      description: Permissions to certificates
+      type: Unknown
+    - contextPath: AzureKeyVault.KeyVault.enabledForDeployment
+      description: Property to specify whether Azure Virtual Machines are permitted
+        to retrieve certificates stored as secrets from the key vault.
+      type: Boolean
+    - contextPath: AzureKeyVault.KeyVault.enabledForDiskEncryption
+      description: Property to specify whether Azure Disk Encryption is permitted
+        to retrieve secrets from the vault and unwrap keys.
+      type: Boolean
+    - contextPath: AzureKeyVault.KeyVault.enabledForTemplateDeployment
+      description: Property to specify whether Azure Resource Manager is permitted
+        to retrieve secrets from the key vault.
+      type: Boolean
+    - contextPath: AzureKeyVault.KeyVault.hsmPoolResourceId
+      description: |+
+        The resource id of HSM Pool.
+
+      type: String
+    - contextPath: AzureKeyVault.KeyVault.vaultUri
+      description: |+
+        The URI of the vault for performing operations on keys and secrets. This property is readonly
+
+      type: String
+    - contextPath: AzureKeyVault.KeyVault.provisioningState
+      description: |+
+        The current provisioning state..
+
+      type: String
+  - arguments:
+    - default: false
+      description: The name of the vault to delete
+      isArray: false
+      name: vault_name
+      required: true
+      secret: false
+    deprecated: false
+    description: Deletes the specified key vault
+    execution: false
+    name: azure-key-vault-delete-key-vault
+  - arguments:
+    - default: false
+      description: key vault's name
+      isArray: false
+      name: vault_name
+      required: true
+      secret: false
+    deprecated: false
+    description: Gets the specified key vault.
+    execution: false
+    name: azure-key-vault-get-key-vault
+    outputs:
+    - contextPath: AzureKeyVault.KeyVault.id
+      description: resource id.
+      type: String
+    - contextPath: AzureKeyVault.KeyVault.name
+      description: key vault name.
+      type: String
+    - contextPath: AzureKeyVault.KeyVault.type
+      description: resource type in Azure.
+      type: String
+    - contextPath: AzureKeyVault.KeyVault.location
+      description: Key Vault location.
+      type: String
+    - contextPath: AzureKeyVault.KeyVault.tags
+      description: Tags assigned to the key vault resource.
+      type: String
+    - contextPath: AzureKeyVault.KeyVault.properties.sku.family
+      description: SKU family name.
+      type: String
+    - contextPath: AzureKeyVault.KeyVault.properties.sku.name
+      description: SKU name to specify whether the key vault is a standard vault or
+        a premium vault.
+      type: String
+    - contextPath: AzureKeyVault.KeyVault.tenantId
+      description: The Azure Active Directory tenant ID that should be used for authenticating
+        requests to the key vault.
+      type: String
+    - contextPath: AzureKeyVault.KeyVault.accessPolicies.tenantId
+      description: The Azure Active Directory tenant ID that should be used for authenticating
+        requests to the key vault
+      type: String
+    - contextPath: AzureKeyVault.KeyVault.accessPolicies.objectId
+      description: The object ID of a user, service principal or security group in
+        the Azure Active Directory tenant for the vault. The object ID must be unique
+        for the list of access policies.
+      type: String
+    - contextPath: AzureKeyVault.KeyVault.accessPolicies.permissions.keys
+      description: Permissions to keys
+      type: Unknown
+    - contextPath: AzureKeyVault.KeyVault.accessPolicies.permissions.secrets
+      description: Permissions to secrets
+      type: Unknown
+    - contextPath: AzureKeyVault.KeyVault.accessPolicies.permissions.certificates
+      description: Permissions to certificates
+      type: Unknown
+    - contextPath: AzureKeyVault.KeyVault.enabledForDeployment
+      description: Property to specify whether Azure Virtual Machines are permitted
+        to retrieve certificates stored as secrets from the key vault.
+      type: Boolean
+    - contextPath: AzureKeyVault.KeyVault.enabledForDiskEncryption
+      description: Property to specify whether Azure Disk Encryption is permitted
+        to retrieve secrets from the vault and unwrap keys.
+      type: Boolean
+    - contextPath: AzureKeyVault.KeyVault.enabledForTemplateDeployment
+      description: Property to specify whether Azure Resource Manager is permitted
+        to retrieve secrets from the key vault.
+      type: Boolean
+    - contextPath: AzureKeyVault.KeyVault.enableSoftDelete
+      description: Property to specify whether the 'soft delete' functionality is
+        enabled for this key vault. If it's not set to any value(true or false) when
+        creating new key vault, it will be set to true by default. Once set to true,
+        it cannot be reverted to false.
+      type: Boolean
+    - contextPath: AzureKeyVault.KeyVault.softDeleteRetentionInDays
+      description: softDelete data retention days. It accepts >=7 and <=90.
+      type: Number
+    - contextPath: AzureKeyVault.KeyVault.vaultUri
+      description: The URI of the vault for performing operations on keys and secrets.
+        This property is readonly
+      type: String
+    - contextPath: AzureKeyVault.KeyVault.RegisteringDns
+      description: Provisioning state of the vault.
+      type: String
+  - deprecated: false
+    description: The List operation gets information about the vaults associated with
+      the subscription
+    execution: false
+    name: azure-key-vault-list-key-vaults
+    outputs:
+    - contextPath: AzureKeyVault.KeyVault.id
+      description: resource id.
+      type: String
+    - contextPath: AzureKeyVault.KeyVault.name
+      description: key vault name.
+      type: String
+    - contextPath: AzureKeyVault.KeyVault.type
+      description: resource type in Azure.
+      type: String
+    - contextPath: AzureKeyVault.KeyVault.location
+      description: Key Vault location.
+      type: String
+    - contextPath: AzureKeyVault.KeyVault.tags
+      description: Tags assigned to the key vault resource.
+      type: String
+    - contextPath: AzureKeyVault.KeyVault.properties.sku.family
+      description: SKU family name.
+      type: String
+    - contextPath: AzureKeyVault.KeyVault.properties.sku.name
+      description: SKU name to specify whether the key vault is a standard vault or
+        a premium vault.
+      type: String
+    - contextPath: AzureKeyVault.KeyVault.tenantId
+      description: The Azure Active Directory tenant ID that should be used for authenticating
+        requests to the key vault.
+      type: String
+    - contextPath: AzureKeyVault.KeyVault.accessPolicies.tenantId
+      description: The Azure Active Directory tenant ID that should be used for authenticating
+        requests to the key vault
+      type: String
+    - contextPath: AzureKeyVault.KeyVault.accessPolicies.objectId
+      description: The object ID of a user, service principal or security group in
+        the Azure Active Directory tenant for the vault. The object ID must be unique
+        for the list of access policies.
+      type: String
+    - contextPath: AzureKeyVault.KeyVault.accessPolicies.permissions.keys
+      description: Permissions to keys
+      type: Unknown
+    - contextPath: AzureKeyVault.KeyVault.accessPolicies.permissions.secrets
+      description: Permissions to secrets
+      type: Unknown
+    - contextPath: AzureKeyVault.KeyVault.accessPolicies.permissions.certificates
+      description: Permissions to certificates
+      type: Unknown
+    - contextPath: AzureKeyVault.KeyVault.enabledForDeployment
+      description: Property to specify whether Azure Virtual Machines are permitted
+        to retrieve certificates stored as secrets from the key vault.
+      type: Boolean
+    - contextPath: AzureKeyVault.KeyVault.enabledForDiskEncryption
+      description: Property to specify whether Azure Disk Encryption is permitted
+        to retrieve secrets from the vault and unwrap keys.
+      type: Boolean
+    - contextPath: AzureKeyVault.KeyVault.enabledForTemplateDeployment
+      description: Property to specify whether Azure Resource Manager is permitted
+        to retrieve secrets from the key vault.
+      type: Boolean
+    - contextPath: AzureKeyVault.KeyVault.enableSoftDelete
+      description: Property to specify whether the 'soft delete' functionality is
+        enabled for this key vault. If it's not set to any value(true or false) when
+        creating new key vault, it will be set to true by default. Once set to true,
+        it cannot be reverted to false.
+      type: Boolean
+    - contextPath: AzureKeyVault.KeyVault.softDeleteRetentionInDays
+      description: softDelete data retention days. It accepts >=7 and <=90.
+      type: Number
+    - contextPath: AzureKeyVault.KeyVault.vaultUri
+      description: The URI of the vault for performing operations on keys and secrets.
+        This property is readonly
+      type: String
+    - contextPath: AzureKeyVault.KeyVault.RegisteringDns
+      description: Provisioning state of the vault.
+      type: String
+  - arguments:
+    - default: false
+      isArray: false
+      name: tenant_id
+      required: true
+      secret: false
+    - default: false
+      description: The supported Azure location where the key vault should be created
+      isArray: false
+      name: location
+      required: true
+      secret: false
+    - default: false
+      description: Properties of the vault
+      isArray: false
+      name: properties
+      required: true
+      secret: false
+    - default: false
+      description: The tags that will be assigned to the key vault.
+      isArray: false
+      name: tags
+      required: false
+      secret: false
+    - default: false
+      description: SKU family name
+      isArray: false
+      name: family
+      required: false
+      secret: false
+    - default: false
+      description: SKU name to specify whether the key vault is a standard vault or
+        a premium vault.
+      isArray: false
+      name: name
+      required: false
+      secret: false
+    - default: false
+      description: The object ID of a user, service principal or security group in
+        the Azure Active Directory tenant for the vault. The object ID must be unique
+        for the list of access policies.
+      isArray: false
+      name: object_id
+      required: false
+      secret: false
+    - auto: PREDEFINED
+      default: false
+      description: Permissions to keys
+      isArray: false
+      name: keys
+      predefined:
+      - encrypt
+      - decrypt
+      - wrapKey
+      - unwrapKey
+      - sign
+      - verify
+      - get
+      - list
+      - create
+      - update
+      - import
+      - delete
+      - backup
+      - restore
+      - recover
+      - purge
+      required: false
+      secret: false
+    - auto: PREDEFINED
+      default: false
+      description: Permissions to secrets
+      isArray: false
+      name: secrets
+      predefined:
+      - get
+      - list
+      - set
+      - delete
+      - backup
+      - restore
+      - recover
+      - purge
+      required: false
+      secret: false
+    - auto: PREDEFINED
+      default: false
+      description: Permissions to certificates
+      isArray: false
+      name: certificates
+      predefined:
+      - get
+      - list
+      - delete
+      - create
+      - import
+      - update
+      - managecontacts
+      - getissuers
+      - listissuers
+      - setissuers
+      - deleteissuers
+      - manageissuers
+      - recover
+      - purge
+      required: false
+      secret: false
+    - default: false
+      isArray: false
+      name: enabled_for_deployment
+      required: false
+      secret: false
+    - default: false
+      isArray: false
+      name: enabled_for_disk_encryption
+      required: false
+      secret: false
+    - default: false
+      isArray: false
+      name: enabled_for_template_deployment
+      required: false
+      secret: false
+    deprecated: false
+    description: Updates access policies in a key vault in the specified subscription.
+    execution: false
+    name: azure-key-vault-update-access-policy
+    outputs:
+    - contextPath: AzureKeyVault.VaultAccessPolicy.id
+      description: resource id
+      type: String
+    - contextPath: AzureKeyVault.VaultAccessPolicy.type
+      description: resource type in Azure
+      type: String
+    - contextPath: AzureKeyVault.VaultAccessPolicy.accessPolicies.tenantId
+      description: The Azure Active Directory tenant ID that should be used for authenticating
+        requests to the key vault.
+      type: String
+    - contextPath: AzureKeyVault.VaultAccessPolicy.accessPolicies.objectId
+      description: The object ID of a user, service principal or security group in
+        the Azure Active Directory tenant for the vault. The object ID must be unique
+        for the list of access policies.
+      type: String
+    - contextPath: AzureKeyVault.VaultAccessPolicy.accessPolicies.permissions.keys
+      description: Permissions to keys
+      type: Unknown
+    - contextPath: AzureKeyVault.VaultAccessPolicy.accessPolicies.permissions.secrets
+      description: Permissions to secrets
+      type: Unknown
+    - contextPath: AzureKeyVault.VaultAccessPolicy.accessPolicies.permissions.certificates
+      description: Permissions to certificates
+      type: Unknown
+  - arguments:
+    - default: false
+      description: The vault name
+      isArray: false
+      name: vault_name
+      required: true
+      secret: false
+    - default: false
+      description: The name of the key to get.
+      isArray: false
+      name: key_name
+      required: true
+      secret: false
+    deprecated: false
+    description: Gets the public part of a stored key
+    execution: false
+    name: azure-key-vault-get-key
+    outputs:
+    - contextPath: AzureKeyVault.Key.key.kid
+      description: Key identifier
+      type: String
+    - contextPath: AzureKeyVault.Key.kty
+      description: JsonWebKey Key Type (kty)
+      type: String
+    - contextPath: AzureKeyVault.Key.key_ops
+      description: Supported key operations.
+      type: Unknown
+    - contextPath: AzureKeyVault.Key.n
+      description: RSA modulus.
+      type: String
+    - contextPath: AzureKeyVault.Key.e
+      description: RSA public exponent
+      type: String
+    - contextPath: AzureKeyVault.Key.attributes.enabled
+      description: |+
+        Determines whether the object is enabled.
+
+      type: Boolean
+    - contextPath: AzureKeyVault.Key.attributes.created
+      description: |+
+        Creation time in UTC.
+
+      type: Date
+    - contextPath: AzureKeyVault.Key.attributes.updated
+      description: Last updated time in UTC.
+      type: Date
+    - contextPath: AzureKeyVault.Key.attributes.recoveryLevel
+      description: Reflects the deletion recovery level currently in effect for keys
+        in the current vault. If it contains 'Purgeable' the key can be permanently
+        deleted by a privileged user; otherwise, only the system can purge the key,
+        at the end of the retention interval.
+      type: String
+    - contextPath: AzureKeyVault.Key.tags
+      description: "\t\nApplication specific metadata in the form of key-value pairs"
+      type: Unknown
+  - arguments:
+    - default: false
+      description: The vault name
+      isArray: false
+      name: vault_name
+      required: true
+      secret: false
+    deprecated: false
+    description: Lists keys in the specified vault
+    execution: false
+    name: azure-key-vault-list-keys
+    outputs:
+    - contextPath: AzureKeyVault.Key.value.kid
+      description: Key identifier
+      type: String
+    - contextPath: AzureKeyVault.Key.attributes.enabled
+      description: Determines whether the object is enabled
+      type: Boolean
+    - contextPath: AzureKeyVault.Key.attributes.nbf
+      description: Not before date in UTC.
+      type: Date
+    - contextPath: AzureKeyVault.Key.attributes.exp
+      description: Expiry date in UTC.
+      type: Date
+    - contextPath: AzureKeyVault.Key.attributes.created
+      description: Creation time in UTC.
+      type: Date
+    - contextPath: AzureKeyVault.Key.attributes.updated
+      description: Last updated time in UTC
+      type: Date
+    - contextPath: AzureKeyVault.Key.attributes.recoveryLevel
+      description: Reflects the deletion recovery level currently in effect for keys
+        in the current vault. If it contains 'Purgeable' the key can be permanently
+        deleted by a privileged user; otherwise, only the system can purge the key,
+        at the end of the retention interval.
+      type: String
+    - contextPath: AzureKeyVault.Key.attributes.recoverableDays
+      description: softDelete data retention days. Value should be >=7 and <=90 when
+        softDelete enabled, otherwise 0.
+      type: Number
+    - contextPath: AzureKeyVault.Key.value.managed
+      description: True if the key's lifetime is managed by key vault. If this is
+        a key backing a certificate, then managed will be true.
+      type: Boolean
+  - arguments:
+    - default: false
+      description: The vault name
+      isArray: false
+      name: vault_name
+      required: true
+      secret: false
+    - default: false
+      description: The name of the key to delete.
+      isArray: false
+      name: key_name
+      required: true
+      secret: false
+    deprecated: false
+    description: Deletes a key of any type from storage in Azure Key vault.
+    execution: false
+    name: azure-key-vault-delete-key
+    outputs:
+    - contextPath: AzureKeyVault.Key.recoveryId
+      description: The url of the recovery object, used to identify and recover the
+        deleted key.
+      type: String
+    - contextPath: AzureKeyVault.Key.deletedDate
+      description: "\t\nThe time when the key was deleted, in UTC"
+      type: Date
+    - contextPath: AzureKeyVault.Key.key.kid
+      description: Key identifier
+      type: String
+    - contextPath: AzureKeyVault.Key.key.kty
+      description: JsonWebKey Key Type (kty)
+      type: String
+    - contextPath: AzureKeyVault.Key.key.key_ops
+      description: Supported key operations.
+      type: Unknown
+    - contextPath: AzureKeyVault.Key.key.n
+      description: RSA modulus.
+      type: String
+    - contextPath: AzureKeyVault.Key.key.e
+      description: RSA public exponent
+      type: String
+    - contextPath: AzureKeyVault.Key.attributes.enabled
+      description: |+
+        Determines whether the object is enabled.
+
+      type: Boolean
+    - contextPath: AzureKeyVault.Key.attributes.created
+      description: Creation time in UTC
+      type: Number
+    - contextPath: AzureKeyVault.Key.attributes.updated
+      description: Last updated time in UTC.
+      type: Number
+    - contextPath: AzureKeyVault.Key.attributes.recoveryLevel
+      description: Reflects the deletion recovery level currently in effect for keys
+        in the current vault. If it contains 'Purgeable' the key can be permanently
+        deleted by a privileged user; otherwise, only the system can purge the key,
+        at the end of the retention interval.
+      type: String
+    - contextPath: AzureKeyVault.Key.tags
+      description: "\t\nApplication specific metadata in the form of key-value pairs"
+      type: Unknown
+  - arguments:
+    - default: false
+      description: The vault name
+      isArray: false
+      name: vault_name
+      required: true
+      secret: false
+    - default: false
+      description: The name of the secret to get.
+      isArray: false
+      name: secret_name
+      required: true
+      secret: false
+    deprecated: false
+    description: |-
+      Get a specified secret from a given key vault.
+      The GET operation is applicable to any secret stored in Azure Key Vault. This operation requires the secrets/get permission.
+    execution: false
+    name: azure-key-vault-get-secret
+    outputs:
+    - contextPath: AzureKeyVault.Secret.value
+      description: secret's value
+      type: String
+    - contextPath: AzureKeyVault.Secret.id
+      description: secret's id
+      type: String
+    - contextPath: AzureKeyVault.Secret.managed
+      description: "\t\nTrue if the secret's lifetime is managed by key vault. If\
+        \ this is a secret backing a certificate, then managed will be true."
+      type: String
+    - contextPath: AzureKeyVault.Secret.attributes.enabled
+      description: |+
+        Determines whether the object is enabled.
+
+      type: Bolean
+    - contextPath: AzureKeyVault.Secret.attributes.created
+      description: Creation time in UTC.
+      type: Date
+    - contextPath: AzureKeyVault.Secret.attributes.updated
+      description: Last updated time in UTC.
+      type: Date
+    - contextPath: AzureKeyVault.Secret.attributes.recoveryLevel
+      description: Reflects the deletion recovery level currently in effect for secrets
+        in the current vault. If it contains 'Purgeable', the secret can be permanently
+        deleted by a privileged user; otherwise, only the system can purge the secret,
+        at the end of the retention interval.
+      type: String
+  - arguments:
+    - default: false
+      description: The vault name
+      isArray: false
+      name: vault_name
+      required: true
+      secret: false
+    deprecated: false
+    description: List secrets in a specified key vault.
+    execution: false
+    name: azure-key-vault-list-secrets
+    outputs:
+    - contextPath: AzureKeyVault.Key.id
+      description: secret's id
+      type: String
+    - contextPath: AzureKeyVault.Key.managed
+      description: "\t\nTrue if the secret's lifetime is managed by key vault. If\
+        \ this is a secret backing a certificate, then managed will be true."
+      type: String
+    - contextPath: AzureKeyVault.Key.attributes.enabled
+      description: |+
+        Determines whether the object is enabled.
+
+      type: Bolean
+    - contextPath: AzureKeyVault.Key.attributes.nbf
+      description: Not before date in UTC.
+      type: Date
+    - contextPath: AzureKeyVault.Key.attributes.exp
+      description: Expiry date in UTC.
+      type: Date
+    - contextPath: AzureKeyVault.Key.attributes.created
+      description: Creation time in UTC.
+      type: Date
+    - contextPath: AzureKeyVault.Key.attributes.updated
+      description: Last updated time in UTC.
+      type: Date
+    - contextPath: AzureKeyVault.Key.attributes.recoveryLevel
+      description: Reflects the deletion recovery level currently in effect for secrets
+        in the current vault. If it contains 'Purgeable', the secret can be permanently
+        deleted by a privileged user; otherwise, only the system can purge the secret,
+        at the end of the retention interval.
+      type: String
+    - contextPath: AzureKeyVault.Key.attributes.recoverableDays
+      description: softDelete data retention days. Value should be >=7 and <=90 when
+        softDelete enabled, otherwise 0.
+      type: Number
+  - arguments:
+    - default: false
+      description: The vault name
+      isArray: false
+      name: vault_name
+      required: true
+      secret: false
+    - default: false
+      description: The name of the secret to delete.
+      isArray: false
+      name: secret_name
+      required: true
+      secret: false
+    deprecated: false
+    description: Deletes a secret from a specified key vault.
+    execution: false
+    name: azure-key-vault-delete-secret
+    outputs:
+    - contextPath: AzureKeyVault.Secret.recoveryId
+      description: "\t\nThe url of the recovery object, used to identify and recover\
+        \ the deleted secret."
+      type: String
+    - contextPath: AzureKeyVault.Secret.deletedDate
+      description: "\t\nThe time when the secret was deleted, in UTC"
+      type: Date
+    - contextPath: AzureKeyVault.Secret.scheduledPurgeDate
+      description: The time when the secret is scheduled to be purged, in UTC
+      type: Date
+    - contextPath: AzureKeyVault.Secret.id
+      description: id of the deleted secret
+      type: String
+    - contextPath: AzureKeyVault.Secret.attributes.enabled
+      description: |+
+        Determines whether the object is enabled.
+
+      type: Boolean
+    - contextPath: AzureKeyVault.Secret.attributes.created
+      description: "\t\nCreation time in UTC."
+      type: Date
+    - contextPath: AzureKeyVault.Secret.attributes.updated
+      description: Last updated time in UTC.
+      type: Date
+    - contextPath: AzureKeyVault.Secret.attributes.recoveryLevel
+      description: Reflects the deletion recovery level currently in effect for secrets
+        in the current vault
+      type: String
+  - arguments:
+    - default: false
+      description: The vault name
+      isArray: false
+      name: vault_name
+      required: true
+      secret: false
+    - default: false
+      description: The name of the certificate to get.
+      isArray: false
+      name: certificate_name
+      required: true
+      secret: false
+    deprecated: false
+    description: |-
+      Gets information about a certificate.
+      Gets information about a specific certificate. This operation requires the certificates/get permission.
+    execution: false
+    name: azure-key-vault-get-certificate
+    outputs:
+    - contextPath: AzureKeyVault.Certificate.id
+      description: |+
+        The certificate id.
+
+      type: String
+    - contextPath: AzureKeyVault.Certificate.kid
+      description: The key id.
+      type: String
+    - contextPath: AzureKeyVault.Certificate.sid
+      description: The secret id.
+      type: String
+    - contextPath: AzureKeyVault.Certificate.x5t
+      description: Thumbprint of the certificate.
+      type: String
+    - contextPath: AzureKeyVault.Certificate.cer
+      description: "\t\nCER contents of x509 certificate."
+      type: String
+    - contextPath: AzureKeyVault.Certificate.attributes.enabled
+      description: |+
+        Determines whether the object is enabled.
+
+      type: Boolean
+    - contextPath: AzureKeyVault.Certificate.attributes.nbf
+      description: |+
+        Not before date in UTC.
+
+      type: Date
+    - contextPath: AzureKeyVault.Certificate.attributes.exp
+      description: |+
+        Expiry date in UTC.
+
+      type: Date
+    - contextPath: AzureKeyVault.Certificate.attributes.created
+      description: |+
+        Creation time in UTC.
+
+      type: Date
+    - contextPath: AzureKeyVault.Certificate.attributes.updated
+      description: |+
+        Last updated time in UTC.
+
+      type: Date
+    - contextPath: AzureKeyVault.Certificate.attributes.recoveryLevel
+      description: Reflects the deletion recovery level currently in effect for certificates
+        in the current vault. If it contains 'Purgeable', the certificate can be permanently
+        deleted by a privileged user; otherwise, only the system can purge the certificate,
+        at the end of the retention interval.
+      type: String
+    - contextPath: AzureKeyVault.Certificate.policy.id
+      description: |+
+        The certificate id.
+
+      type: String
+    - contextPath: AzureKeyVault.Certificate.policy.key_props.exportable
+      description: |+
+        Not supported in this version. Indicates if the private key can be exported.
+
+      type: Boolean
+    - contextPath: AzureKeyVault.Certificate.policy.key_props.kty
+      description: The type of key pair to be used for the certificate.
+      type: String
+    - contextPath: AzureKeyVault.Certificate.policy.key_props.key_size
+      description: 'The key size in bits. For example: 2048, 3072, or 4096 for RSA.'
+      type: Number
+    - contextPath: AzureKeyVault.Certificate.policy.key_props.reuse_key
+      description: |+
+        Indicates if the same key pair will be used on certificate renewal.
+
+      type: Boolean
+    - contextPath: AzureKeyVault.Certificate.policy.secret_props.contentType
+      description: |+
+        The media type (MIME type).
+
+      type: String
+    - contextPath: AzureKeyVault.Certificate.policy.x509_props.subject
+      description: |+
+        The subject name. Should be a valid X509 distinguished Name.
+
+      type: String
+    - contextPath: AzureKeyVault.Certificate.policy.x509_props.ekus
+      description: |+
+        The enhanced key usage.
+
+      type: Unknown
+    - contextPath: AzureKeyVault.Certificate.policy.x509_props.key_usage
+      description: |+
+        List of key usages.
+
+      type: Unknown
+    - contextPath: AzureKeyVault.Certificate.policy.x509_props.validity_months
+      description: |+
+        The duration that the certificate is valid in months.
+
+      type: Number
+    - contextPath: AzureKeyVault.Certificate.policy.lifetime_actions.trigger.days_before_expiry
+      description: "\t\nDays before expiry to attempt renewal. Value should be between\
+        \ 1 and validity_in_months multiplied by 27"
+      type: Number
+    - contextPath: AzureKeyVault.Certificate.policy.lifetime_actions.trigger.lifetime_percentage
+      description: |+
+        Percentage of lifetime at which to trigger. Value should be between 1 and 99.
+
+      type: Number
+    - contextPath: AzureKeyVault.Certificate.policy.lifetime_actions.action.action_type
+      description: |+
+        The type of the action.
+
+      type: String
+    - contextPath: AzureKeyVault.Certificate.policy.issuer.name
+      description: "\t\nName of the referenced issuer object or reserved names; for\
+        \ example, 'Self' or 'Unknown'."
+      type: String
+    - contextPath: AzureKeyVault.Certificate.policy.attributes.enabled
+      description: |+
+        Determines whether the object is enabled.
+
+      type: Boolean
+    - contextPath: AzureKeyVault.Certificate.policy.attributes.created
+      description: Creation time in UTC.
+      type: Date
+    - contextPath: AzureKeyVault.Certificate.policy.attributes.updated
+      description: Last updated time in UTC
+      type: Date
+  - arguments:
+    - default: false
+      description: The vault name
+      isArray: false
+      name: vault_name
+      required: true
+      secret: false
+    - default: false
+      description: maximum number of certificates
+      isArray: false
+      name: max_results
+      required: false
+      secret: false
+    deprecated: false
+    description: List certificates in a specified key vault
+    execution: false
+    name: azure-key-vault-list-certificates
+    outputs:
+    - contextPath: AzureKeyVault.Certificate.value.id
+      description: certificate's id
+      type: String
+    - contextPath: AzureKeyVault.Certificate.value.x5t
+      type: String
+    - contextPath: AzureKeyVault.Certificate.attributes.enabled
+      description: |+
+        Determines whether the object is enabled.
+
+      type: Boolean
+    - contextPath: AzureKeyVault.Certificate.attributes.nbf
+      description: |+
+        Not before date in UTC.
+
+      type: Date
+    - contextPath: AzureKeyVault.Certificate.attributes.exp
+      description: "\t\nExpiry date in UTC."
+      type: Date
+    - contextPath: AzureKeyVault.Certificate.attributes.created
+      description: |+
+        Creation time in UTC.
+
+      type: Date
+    - contextPath: AzureKeyVault.Certificate.attributes.updated
+      description: |+
+        Last updated time in UTC.
+
+      type: Date
+  - arguments:
+    - default: false
+      description: The vault name
+      isArray: false
+      name: vault_name
+      required: true
+      secret: false
+    - default: false
+      description: The name of the certificate to delete.
+      isArray: false
+      name: certificate_name
+      required: true
+      secret: false
+    deprecated: false
+    description: Deletes a certificate from a specified key vault.
+    execution: false
+    name: azure-key-vault-delete-certificate
+    outputs:
+    - contextPath: AzureKeyVault.Certificate.recoveryId
+      description: |+
+        The url of the recovery object, used to identify and recover the deleted certificate.
+
+      type: String
+    - contextPath: AzureKeyVault.Certificate.deletedDate
+      description: |+
+        The time when the certificate was deleted, in UTC
+
+      type: Date
+    - contextPath: AzureKeyVault.Certificate.scheduledPurgeDate
+      description: |+
+        The time when the certificate is scheduled to be purged, in UTC
+
+      type: Date
+    - contextPath: AzureKeyVault.Certificate.id
+      description: certificate's id
+      type: String
+    - contextPath: AzureKeyVault.Certificate.kid
+      description: |+
+        The key id.
+
+      type: String
+    - contextPath: AzureKeyVault.Certificate.sid
+      description: |+
+        The secret id.
+
+      type: String
+    - contextPath: AzureKeyVault.Certificate.x5t
+      description: |+
+        Thumbprint of the certificate.
+
+      type: String
+    - contextPath: AzureKeyVault.Certificate.cer
+      description: |+
+        CER contents of x509 certificate.
+
+      type: String
+    - contextPath: AzureKeyVault.Certificate.attributes.enabled
+      description: |+
+        Determines whether the object is enabled.
+
+      type: Boolean
+    - contextPath: AzureKeyVault.Certificate.attributes.nbf
+      description: |+
+        Not before date in UTC.
+
+      type: Date
+    - contextPath: AzureKeyVault.Certificate.attributes.exp
+      description: |+
+        Expiry date in UTC.
+
+      type: Date
+    - contextPath: AzureKeyVault.Certificate.attributes.created
+      description: |+
+        Creation time in UTC.
+
+      type: Date
+    - contextPath: AzureKeyVault.Certificate.attributes.updated
+      description: |+
+        Last updated time in UTC.
+
+      type: Date
+    - contextPath: AzureKeyVault.Certificate.attributes.recoveryLevel
+      description: Reflects the deletion recovery level currently in effect for certificates
+        in the current vault. If it contains 'Purgeable', the certificate can be permanently
+        deleted by a privileged user; otherwise, only the system can purge the certificate,
+        at the end of the retention interval.
+      type: String
+    - contextPath: AzureKeyVault.Certificate.policy.id
+      description: |+
+        The certificate id.
+
+      type: String
+    - contextPath: AzureKeyVault.Certificate.policy.key_props.exportable
+      description: |+
+        Not supported in this version. Indicates if the private key can be exported.
+
+      type: Boolean
+    - contextPath: AzureKeyVault.Certificate.policy.key_props.kty
+      description: The type of key pair to be used for the certificate.
+      type: String
+    - contextPath: AzureKeyVault.Certificate.policy.key_props.key_size
+      description: |+
+        The key size in bits. For example: 2048, 3072, or 4096 for RSA.
+
+      type: Number
+    - contextPath: AzureKeyVault.Certificate.policy.key_props.reuse_key
+      description: |+
+        Indicates if the same key pair will be used on certificate renewal.
+
+      type: Boolean
+    - contextPath: AzureKeyVault.Certificate.policy.secret_props.contentType
+      description: |+
+        The media type (MIME type).
+
+      type: String
+    - contextPath: AzureKeyVault.Certificate.policy.x509_props.subject
+      description: The subject name. Should be a valid X509 distinguished Name
+      type: String
+    - contextPath: AzureKeyVault.Certificate.policy.x509_props.ekus
+      description: |+
+        The enhanced key usage.
+
+      type: Unknown
+    - contextPath: AzureKeyVault.Certificate.policy.x509_props.key_usage
+      description: |+
+        The enhanced key usage.
+
+      type: Unknown
+    - contextPath: AzureKeyVault.Certificate.policy.x509_props.validity_months
+      description: The duration that the certificate is valid in months.
+      type: Number
+    - contextPath: AzureKeyVault.Certificate.policy.lifetime_actions.trigger.lifetime_percentage
+      description: Percentage of lifetime at which to trigger. Value should be between
+        1 and 99
+      type: Number
+    - contextPath: AzureKeyVault.Certificate.policy.lifetime_actions.action.action_type
+      description: The type of the action.
+      type: String
+    - contextPath: AzureKeyVault.Certificate.policy.issuer.name
+      description: "\t\nName of the referenced issuer object or reserved names; for\
+        \ example, 'Self' or 'Unknown'."
+      type: String
+    - contextPath: AzureKeyVault.Certificate.policy.attributes.enabled
+      description: |+
+        Determines whether the object is enabled.
+
+      type: Boolean
+    - contextPath: AzureKeyVault.Certificate.policy.attributes.created
+      description: Creation time in UTC.
+      type: Date
+    - contextPath: AzureKeyVault.Certificate.policy.attributes.updated
+      description: Last updated time in UTC
+      type: Date
+  dockerimage: demisto/python3:3.9.2.17957
+  feed: false
+  isfetch: false
+  longRunning: false
+  longRunningPort: false
+  runonce: false
+  script: '-'
+  subtype: python3
+  type: python
